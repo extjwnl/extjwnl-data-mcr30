@@ -1,0 +1,49 @@
+Data License Information (MCR WordNet 3.0 database files)
+
+These files were created from the Multilingual Central Repository 3.0.
+The latest MCR 3.0 files can be downloaded from
+http://adimen.si.ehu.es/web/MCR/
+The latest version of the transformation process can be found in
+https://github.com/lingeringsocket/wn-mcr-transform
+
+The contents of the MCR package are distributed under different open licenses.
+If you want to redistribute this software, part of it, or derived works based
+on it or on any of its parts, make sure you are doing so under the terms stated
+in the license applying to each of the involved modules.
+The licenses applying to the modules contained in MCR are the following:
+ - English WordNet synset and relation data are
+     distributed under the original WordNet license. You can find it at
+     http://wordnet.princeton.edu/wordnet/license
+ - Basque WordNet synset and relation data are
+     distributed under CreativeCommons Attribution-NonCommercial-ShareAlike 3.0
+     Unported (CC BY-NC-SA 3.0) license. You can find it at
+     http://creativecommons.org/licenses/by-nc-sa/3.0
+ - All other data in the MCR package are distributed under Attribution 3.0 Unported
+     (CC BY 3.0) license. You can find it at
+     http://creativecommons.org/licenses/by/3.0/
+
+
+Additional Software License Information
+
+Copyright © 2020-2020 John V. Sichi
+Copyright © 2010-2018 Aliaksandr Autayeu (http://autayeu.com)
+Copyright © 2000-2007 the JWNL development team (http://www.sourceforge.net/projects/jwordnet)
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided
+that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this list of conditions and the
+following disclaimer.
+* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and
+the following disclaimer in the documentation and/or other materials provided with the distribution.
+* Neither the name of the product ("extJWNL") nor the names of its contributors may be used to endorse or promote
+products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
