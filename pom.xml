@@ -11,4 +11,65 @@
     <modules>
         <module>data-spa</module>
     </modules>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>3.0.0-M3</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.2.0</version>
+                    <executions>
+                        <execution>
+                            <id>copy-resources</id>
+                            <phase>process-resources</phase>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                                <resources>
+                                    <resource>
+                                        <directory>${project.basedir}/src/main/resources/net/sf/extjwnl/data/mcr30/spa</directory>
+                                        <includes>
+                                            <include>res_properties.xml</include>
+                                        </includes>
+                                        <filtering>false</filtering>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>com.coderplus.maven.plugins</groupId>
+                    <artifactId>copy-rename-maven-plugin</artifactId>
+                    <version>1.0.1</version>
+                    <executions>
+                        <execution>
+                            <id>copy-and-rename-file</id>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>rename</goal>
+                            </goals>
+                            <configuration>
+                                <sourceFile>${project.build.outputDirectory}/res_properties.xml</sourceFile>
+                                <destinationFile>${project.build.outputDirectory}/extjwnl_resource_properties.xml</destinationFile>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>
