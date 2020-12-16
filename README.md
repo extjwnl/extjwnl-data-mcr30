@@ -19,7 +19,7 @@ In the pom.xml:
 <dependency>
     <groupId>net.sf.extjwnl.mcr</groupId>
     <artifactId>extjwnl-data-spa-mcr30</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
 </dependency>
 ```
 
