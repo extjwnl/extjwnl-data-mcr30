@@ -81,7 +81,7 @@ The mapping table can be loaded in order to translate between non-English and En
 
 Language-specific stemming rules are packaged in each data module; for
 example, the Spanish-specific stemming rules are in
-[extjwnl_data_spa_mcr30.xml](data-spa/src/main/resources/extjwnl_data_spa_mcr30.xml)
+[extjwnl_data_spa_mcr30.xml](lang-spa/src/main/resources/net/sf/extjwnl/data/mcr30/spa/res_properties.xml)
 
 # Exceptional Forms
 
