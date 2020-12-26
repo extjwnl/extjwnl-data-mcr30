@@ -43,6 +43,7 @@ use it, you first need the following additional dependency in your `pom.xml`:
     <artifactId>extjwnl-data-alignment-mcr30</artifactId>
     <version>0.0.1</version>
 </dependency>
+```
 
 Then you can load the MCR 3.0 Spanish wordnet together with two
 versions (3.0 and 3.1) of Princeton WordNet:
