@@ -94,6 +94,40 @@ public class InterLingualIndexTest
         Assert.assertEquals(love31, reverse);
     }
 
+    @Test
+    public void verifyMissingMapping() throws JWNLException
+    {
+        long offset31 = 8406649;
+        Synset zumbooruk31 = wn31.getSynsetAt(POS.NOUN, offset31);
+        Assert.assertTrue(zumbooruk31.containsWord("zumbooruk"));
+
+        // verify mapping does not exist
+        Synset zumbooruk30 = InterLingualIndex.mapSynset(zumbooruk31, wn30);
+        Assert.assertNull(zumbooruk30);
+
+        // but also verify that mapper is valid
+        SynsetMapper mapper = InterLingualIndex.loadMapper(wn31, wn30);
+        Assert.assertNotNull(mapper);
+    }
+
+    @Test
+    public void verifyUnsupportedVersion() throws JWNLException
+    {
+        long offset31 = 7558676;
+
+        Synset love31 = wn31.getSynsetAt(POS.NOUN, offset31);
+        Assert.assertTrue(love31.containsWord("love"));
+        Assert.assertEquals(offset31, love31.getOffset());
+
+        // try to map from 3.1 to 2.1; verify mapping does not exist
+        Synset love21 = InterLingualIndex.mapSynset(love31, wn21);
+        Assert.assertNull(love21);
+
+        // also verify that mapper can't even be loaded for this combination
+        SynsetMapper mapper = InterLingualIndex.loadMapper(wn31, wn21);
+        Assert.assertNull(mapper);
+    }
+
     private void checkDictionary(
         Dictionary dict,
         String expectedNoun,
