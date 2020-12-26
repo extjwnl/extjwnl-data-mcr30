@@ -115,8 +115,8 @@ The MCR is aligned with Princeton WordNet 3.0, so for realigning to Princeton Wo
 # Stemming
 
 Language-specific stemming rules are packaged in each data module; for
-example, the Spanish-specific stemming rules are in
-[extjwnl_data_spa_mcr30.xml](lang-spa/src/main/resources/net/sf/extjwnl/data/mcr30/spa/res_properties.xml)
+example, [here](lang-spa/src/main/resources/net/sf/extjwnl/data/mcr30/spa/res_properties.xml)
+are the Spanish-specific stemming rules.
 
 # Exceptional Forms
 
