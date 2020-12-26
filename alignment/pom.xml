@@ -9,8 +9,8 @@
     <artifactId>extjwnl-data-alignment-mcr30</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>extJWNL MCR 3.0 Interlingual Index</name>
-    <description>Interlingual Index API for MCR 3.0</description>
+    <name>extJWNL MCR 3.0 Interlingual Index Data and API</name>
+    <description>Interlingual Index Data and API for MCR 3.0</description>
 
     <dependencies>
         <dependency>
@@ -54,4 +54,13 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+    </build>
 </project>
