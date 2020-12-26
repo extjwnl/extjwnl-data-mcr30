@@ -8,7 +8,7 @@ these resources in your project.
 
 # Getting started
 
-In the pom.xml:
+In your `pom.xml`:
 
 ```xml
 <dependency>
@@ -23,10 +23,54 @@ In the pom.xml:
 </dependency>
 ```
 
-In the code:
+In your code:
 
 ```java
+import net.sf.extjwnl.dictionary.*;
+
 Dictionary d = Dictionary.getDefaultResourceInstance();
+```
+
+# Mapping Between Dictionaries
+
+extjwnl-data-mcr30 also contains an `alignment` module which supports
+loading multiple dictionaries and mapping word senses between them.  To
+use it, you first need the following additional dependency in your `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>net.sf.extjwnl.mcr</groupId>
+    <artifactId>extjwnl-data-alignment-mcr30</artifactId>
+    <version>0.0.1</version>
+</dependency>
+
+Then you can load the MCR 3.0 Spanish wordnet together with two
+versions (3.0 and 3.1) of Princeton WordNet:
+
+```java
+import net.sf.extjwnl.dictionary.*;
+import net.sf.extjwnl.data.mcr30.alignment.*;
+
+Dictionary spa = InterLingualIndex.getDictionary("mcr30", "spa");
+Dictionary wn31 = InterLingualIndex.getDictionary("wn31", "eng");
+Dictionary wn30 = InterLingualIndex.getDictionary("wn30", "eng");
+```
+
+After that, if you have a Spanish synset, you can find the corresponding
+English synset (if a mapping exists):
+
+```java
+Synset englishSynset = InterLingualIndex.mapSynset(spanishSynset, wn31);
+```
+
+If you need to map lots of synsets, then use the `SynsetMapper` interface
+instead:
+
+```java
+SynsetMapper mapper = InterLingualIndex.loadMapper(spa, wn31);
+Synset englishSynset1 = mapper.mapSynset(spanishSynset1);
+Synset englishSynset2 = mapper.mapSynset(spanishSynset2);
+...
 ```
 
 # Acknowledgements
@@ -66,16 +110,6 @@ The MCR is aligned with Princeton WordNet 3.0, so for realigning to Princeton Wo
       howpublished = {\url{https://github.com/ozendelait/wordnet-to-json}},
       commit = {7521b70937355e826ea7e028a615108cdb18d0ee}
     }
-
-# Inter-Language Index
-
-The mapping table is provided in file `translation.csv`, a comma-separated file with three columns:
-
-* 0-based line number in non-English synset file (e.g. `a#000030` means the 31st line of `data.adj` in extjwnl-data-mcr30 language-specific data module)
-* synset offset in (English) Princeton WordNet 3.1 (e.g. `a6903` means the synset at character offset 6903 of `data.adj` in Wordnet 3.0)
-* synset offset in (English) Princeton WordNet 3.0 (e.g. `a00006885` means the synset at character offset 6885 of `data.adj` in Wordnet 3.1)
-
-The mapping table can be loaded in order to translate between non-English and English word senses.
 
 # Stemming
 
