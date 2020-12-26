@@ -1,6 +1,6 @@
 # About
 
-extjwnl-data-mcr30 prepackages jars with wordnet data from the Multilingual
+**extjwnl-data-mcr30** prepackages jars with wordnet data from the Multilingual
 Central Repository 3.0 (2016 release; currently only the Spanish portion).
 
 A configuration file is included to make it extremely easy to use
@@ -33,7 +33,7 @@ Dictionary d = Dictionary.getDefaultResourceInstance();
 
 # Mapping Between Dictionaries
 
-extjwnl-data-mcr30 also contains an `alignment` module which supports
+**extjwnl-data-mcr30** also contains an **alignment** module which supports
 loading multiple dictionaries and mapping word senses between them.  To
 use it, you first need the following additional dependency in your `pom.xml`:
 
