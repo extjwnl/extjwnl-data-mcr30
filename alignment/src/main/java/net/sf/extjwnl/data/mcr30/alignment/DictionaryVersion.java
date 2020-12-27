@@ -11,11 +11,11 @@ import net.sf.extjwnl.dictionary.Dictionary;
  */
 class DictionaryVersion
 {
-    private String publisher;
-    private String language;
-    private String number;
+    final private String publisher;
+    final private String language;
+    final private String number;
 
-    DictionaryVersion(Dictionary dictionary)
+    DictionaryVersion(final Dictionary dictionary)
     {
         this(
             dictionary.getVersion().getPublisher(),
@@ -24,9 +24,9 @@ class DictionaryVersion
     }
 
     DictionaryVersion(
-        String publisher,
-        String language,
-        String number)
+        final String publisher,
+        final String language,
+        final String number)
     {
         this.publisher = publisher;
         this.language = language;

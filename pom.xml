@@ -31,15 +31,6 @@
 
     <developers>
         <developer>
-            <id>autayeu</id>
-            <name>Aliaksandr Autayeu</name>
-            <url>http://autayeu.com</url>
-            <timezone>+1</timezone>
-            <properties>
-                <picUrl>http://autayeu.com/img/photos/aliaksandr-autayeu.jpg</picUrl>
-            </properties>
-        </developer>
-        <developer>
             <id>jsichi</id>
             <name>John V. Sichi</name>
             <url>https://people.apache.org/~jvs</url>

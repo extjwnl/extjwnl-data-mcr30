@@ -110,7 +110,7 @@ public class InterLingualIndexTest
         Assert.assertNotNull(mapper);
     }
 
-    @Test
+    @Test(expected = JWNLException.class)
     public void verifyUnsupportedVersion() throws JWNLException
     {
         long offset31 = 7558676;
@@ -119,13 +119,8 @@ public class InterLingualIndexTest
         Assert.assertTrue(love31.containsWord("love"));
         Assert.assertEquals(offset31, love31.getOffset());
 
-        // try to map from 3.1 to 2.1; verify mapping does not exist
-        Synset love21 = InterLingualIndex.mapSynset(love31, wn21);
-        Assert.assertNull(love21);
-
-        // also verify that mapper can't even be loaded for this combination
-        SynsetMapper mapper = InterLingualIndex.loadMapper(wn31, wn21);
-        Assert.assertNull(mapper);
+        // try to map from 3.1 to 2.1; verify that mapper can't even be loaded for this combination
+        InterLingualIndex.loadMapper(wn31, wn21);
     }
 
     private void checkDictionary(

@@ -11,7 +11,7 @@ abstract class AlignmentTable
 {
     AlignmentTable reverse;
 
-    void linkReverse(AlignmentTable table)
+    void linkReverse(final AlignmentTable table)
     {
         reverse = table;
         table.reverse = this;
@@ -22,11 +22,12 @@ abstract class AlignmentTable
         return reverse;
     }
         
-    abstract Long lookup(POS pos, long first);
+    abstract Long lookup(final POS pos, final long first);
 
-    abstract void addMapping(POS pos, long first, long second, boolean withReverse);
+    abstract void addMapping(
+        final POS pos, final long first, final long second, final boolean withReverse);
 
-    void addMapping(POS pos, long first, long second)
+    void addMapping(final POS pos, final long first, final long second)
     {
         addMapping(pos, first, second, true);
     }
@@ -37,18 +38,19 @@ abstract class AlignmentTable
  */
 class MapAlignmentTable extends AlignmentTable
 {
-    Map<POS, Map<Long, Long>> forward = newMap();
+    final Map<POS, Map<Long, Long>> forward = newMap();
 
     private Map<POS, Map<Long, Long>> newMap()
     {
-        Map<POS, Map<Long, Long>> map = new HashMap<POS, Map<Long, Long>>();
+        final Map<POS, Map<Long, Long>> map = new HashMap<POS, Map<Long, Long>>();
         for (POS pos : POS.values()) {
             map.put(pos, new HashMap<Long, Long>());
         }
         return map;
     }
 
-    @Override void addMapping(POS pos, long first, long second, boolean withReverse)
+    @Override void addMapping(
+final POS pos, final long first, final long second, final boolean withReverse)
     {
         forward.get(pos).put(first, second);
         if (withReverse) {
@@ -56,7 +58,7 @@ class MapAlignmentTable extends AlignmentTable
         }
     }
         
-    @Override Long lookup(POS pos, long first)
+    @Override Long lookup(final POS pos, final long first)
     {
         return forward.get(pos).get(first);
     }
@@ -67,9 +69,9 @@ class MapAlignmentTable extends AlignmentTable
  */
 class CompositionAlignmentTable extends AlignmentTable
 {
-    AlignmentTable t1, t2;
+    final AlignmentTable t1, t2;
 
-    CompositionAlignmentTable(AlignmentTable t1, AlignmentTable t2)
+    CompositionAlignmentTable(final AlignmentTable t1, final AlignmentTable t2)
     {
         this.t1 = t1;
         this.t2 = t2;
@@ -82,7 +84,7 @@ class CompositionAlignmentTable extends AlignmentTable
         
     @Override Long lookup(POS pos, long first)
     {
-        Long offset = t1.lookup(pos, first);
+        final Long offset = t1.lookup(pos, first);
         if (offset == null) {
             return offset;
         } else {

@@ -31,7 +31,7 @@ public class InterLingualIndex
     private static final DictionaryVersion PRINCETON31 =
         new DictionaryVersion(PRINCETON, ENG639_3, "3.1");
 
-    private static Map<String, AlignmentTable> alignmentMap = new HashMap<>();
+    private static final Map<String, AlignmentTable> alignmentMap = new HashMap<>();
 
     /**
      * Gets a dictionary for a language from a known prepackaged source.
@@ -52,8 +52,8 @@ public class InterLingualIndex
      * @throws JWNLException if dictionary unknown or resource unavailable
      */
     public static Dictionary getDictionary(
-        String wordnetSource,
-        String languageCode) throws JWNLException
+        final String wordnetSource,
+        final String languageCode) throws JWNLException
     {
         if (languageCode.equals(ENG639_3)) {
             return loadDictionary("wordnet", wordnetSource);
@@ -75,17 +75,16 @@ public class InterLingualIndex
      * @return the synset corresponding to <code>sourceSynset</code> in the target
      * dictionary, or null if no mapping is available
      *
-     * @throws JWNLException if mapping or dictionary resources could not be accessed
+     * @throws JWNLException if mapping or dictionary resources unavailable or
+     * could not be accessed
      */
-    public static Synset mapSynset(Synset sourceSynset, Dictionary targetDictionary)
+    public static Synset mapSynset(
+        final Synset sourceSynset,
+        final Dictionary targetDictionary)
         throws JWNLException
     {
-        SynsetMapper mapper = loadMapper(sourceSynset.getDictionary(), targetDictionary);
-        if (mapper == null) {
-            return null;
-        } else {
-            return mapper.mapSynset(sourceSynset);
-        }
+        final SynsetMapper mapper = loadMapper(sourceSynset.getDictionary(), targetDictionary);
+        return mapper.mapSynset(sourceSynset);
     }
 
     /**
@@ -99,13 +98,14 @@ public class InterLingualIndex
      * @param targetDictionary the target dictionary into which
      * synsets will be mapped
      *
-     * @return the loaded {@link SynsetMapper}, or null if no mapping is available
+     * @return the loaded {@link SynsetMapper}
      *
-     * @throws JWNLException if mapping or dictionary resources could not be accessed
+     * @throws JWNLException if mapping or dictionary resources unavailable or
+     * could not be accessed
      */
     public static SynsetMapper loadMapper(
-        Dictionary sourceDictionary,
-        Dictionary targetDictionary) throws JWNLException
+        final Dictionary sourceDictionary,
+        final Dictionary targetDictionary) throws JWNLException
     {
         final DictionaryVersion sourceVersion =
             new DictionaryVersion(sourceDictionary);
@@ -114,10 +114,10 @@ public class InterLingualIndex
 
         // no-op case
         if (sourceVersion.equals(targetVersion)) {
-            return new SynsetIdentityMapper();
+            return new IdentitySynsetMapper();
         }
 
-        String alignmentKey = constructAlignmentKey(sourceVersion, targetVersion);
+        final String alignmentKey = constructAlignmentKey(sourceVersion, targetVersion);
 
         AlignmentTable table;
         synchronized(alignmentMap) {
@@ -133,43 +133,43 @@ public class InterLingualIndex
                 table = alignmentMap.get(alignmentKey);
                 if (table == null) {
                     // table not available, give up
-                    return null;
+                    throw new JWNLException(new IllegalArgumentException(alignmentKey));
                 }
             }
         }
         assert(table != null);
-        return new SynsetAlignedMapper(table, targetDictionary);
+        return new AlignedSynsetMapper(table, targetDictionary);
     }
 
     private static String constructAlignmentKey(
-        DictionaryVersion sourceVersion,
-        DictionaryVersion targetVersion)
+        final DictionaryVersion sourceVersion,
+        final DictionaryVersion targetVersion)
     {
         return String.format("%s => %s", sourceVersion, targetVersion);
     }
 
     private static String constructDataPath(
-        String dataParent,
-        String dataDir)
+        final String dataParent,
+        final String dataDir)
     {
         return String.format("net/sf/extjwnl/data/%s/%s", dataParent, dataDir);
     }
 
     private static Dictionary loadDictionary(
-        String dataParent,
-        String dataDir) throws JWNLException
+        final String dataParent,
+        final String dataDir) throws JWNLException
     {
-        String propertiesPath = String.format(
+        final String propertiesPath = String.format(
             "/%s/res_properties.xml", constructDataPath(dataParent, dataDir));
         return Dictionary.getResourceInstance(propertiesPath);
     }
 
     private static void loadAlignmentTables(
-        DictionaryVersion firstVersion,
-        DictionaryVersion secondVersion) throws IOException
+        final DictionaryVersion firstVersion,
+        final DictionaryVersion secondVersion) throws IOException
     {
-        String firstLanguage = firstVersion.getLanguage();
-        String secondLanguage = secondVersion.getLanguage();
+        final String firstLanguage = firstVersion.getLanguage();
+        final String secondLanguage = secondVersion.getLanguage();
 
         if (firstLanguage.equals(secondLanguage)) {
             if (firstLanguage.equals(ENG639_3) &&
@@ -181,7 +181,8 @@ public class InterLingualIndex
         }
         if (!firstLanguage.equals(ENG639_3) && !secondLanguage.equals(ENG639_3)) {
             // TODO: mappings directly between non-English languages using
-            // English as intermediary
+            // English as intermediary; only makes sense once we add other
+            // non-English languages beyond Spanish.
             return;
         }
 
@@ -196,7 +197,7 @@ public class InterLingualIndex
         }
 
         // currently only Princeton WordNet 3.0 or 3.1 is supported for English
-        String englishNumber = englishVersion.getNumber();
+        final String englishNumber = englishVersion.getNumber();
         if (!englishVersion.getPublisher().equals("Princeton")) {
             return;
         }
@@ -221,69 +222,65 @@ public class InterLingualIndex
     private static void loadWordnetTables()
         throws IOException
     {
-        AlignmentTable wn31to30 = new MapAlignmentTable();
-        AlignmentTable wn30to31 = new MapAlignmentTable();
+        final AlignmentTable wn31to30 = new MapAlignmentTable();
+        final AlignmentTable wn30to31 = new MapAlignmentTable();
         wn31to30.linkReverse(wn30to31);
 
-        String dataPath = constructDataPath("mcr30", "alignment");
-        String filePath = String.format("%s/wn31-30.csv", dataPath);
+        final String dataPath = constructDataPath("mcr30", "alignment");
+        final String filePath = String.format("%s/wn31-30.csv", dataPath);
         // resource is bundled with this package, so should always
         // be present
-        InputStream stream = InterLingualIndex.class.
-            getClassLoader().getResourceAsStream(filePath);
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-            for (;;) {
-                String line = reader.readLine();
-                if (line == null) {
-                    break;
-                }
-                String [] fields = line.split(",");
+        try(final InputStream stream = InterLingualIndex.class.
+            getClassLoader().getResourceAsStream(filePath))
+        {
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            while (reader.ready()) {
+                final String line = reader.readLine();
+                final String [] fields = line.split(",");
                 assert(fields.length == 2);
-                String synset31 = fields[0];
-                String synset30 = fields[1];
+                final String synset31 = fields[0];
+                final String synset30 = fields[1];
                 assert(synset31.length() > 1);
                 assert(synset30.length() > 1);
-                char pos31 = synset31.charAt(0);
-                char pos30 = synset30.charAt(0);
+                final char pos31 = synset31.charAt(0);
+                final char pos30 = synset30.charAt(0);
                 if (pos30 != pos31) {
                     // ignore some infelicities in the mapping
                     continue;
                 }
-                POS pos = POS.getPOSForKey(pos31);
-                long offset31 = Long.parseLong(synset31.substring(1));
-                long offset30 = Long.parseLong(synset30.substring(1));
+                final POS pos = POS.getPOSForKey(pos31);
+                final long offset31 = Long.parseLong(synset31.substring(1));
+                final long offset30 = Long.parseLong(synset30.substring(1));
                 wn31to30.addMapping(pos, offset31, offset30);
             }
-        } finally {
-            stream.close();
         }
+
         alignmentMap.put(constructAlignmentKey(PRINCETON30, PRINCETON31), wn30to31);
         alignmentMap.put(constructAlignmentKey(PRINCETON31, PRINCETON30), wn31to30);
     }
 
     private static void loadCompositionTable(
-        DictionaryVersion englishVersion,
-        DictionaryVersion nonEnglishVersion) throws IOException
+        final DictionaryVersion englishVersion,
+        final DictionaryVersion nonEnglishVersion) throws IOException
     {
-        DictionaryVersion english30 = new DictionaryVersion(
+        final DictionaryVersion english30 = new DictionaryVersion(
             englishVersion.getPublisher(),
             englishVersion.getLanguage(),
             "3.0");
         loadAlignmentTables(
             nonEnglishVersion,
             english30);
-        AlignmentTable nonEngToEng30 = alignmentMap.get(
+        final AlignmentTable nonEngToEng30 = alignmentMap.get(
             constructAlignmentKey(nonEnglishVersion, english30));
-        String alignmentKey = constructAlignmentKey(PRINCETON30, PRINCETON31);
+        final String alignmentKey = constructAlignmentKey(PRINCETON30, PRINCETON31);
         AlignmentTable eng30To31 = alignmentMap.get(alignmentKey);
         if (eng30To31 == null) {
             loadWordnetTables();
             eng30To31 = alignmentMap.get(alignmentKey);
         }
-        AlignmentTable nonEngTo31 = new CompositionAlignmentTable(
+        final AlignmentTable nonEngTo31 = new CompositionAlignmentTable(
             nonEngToEng30, eng30To31);
-        AlignmentTable eng31ToNon = new CompositionAlignmentTable(
+        final AlignmentTable eng31ToNon = new CompositionAlignmentTable(
             eng30To31.getReverse(), nonEngToEng30.getReverse());
         nonEngTo31.linkReverse(eng31ToNon);
         alignmentMap.put(
@@ -295,50 +292,45 @@ public class InterLingualIndex
     }
 
     private static void loadMCR(
-        DictionaryVersion englishVersion,
-        DictionaryVersion nonEnglishVersion) throws IOException
+        final DictionaryVersion englishVersion,
+        final DictionaryVersion nonEnglishVersion) throws IOException
     {
-        String nonEnglishLanguage = nonEnglishVersion.getLanguage();
-        AlignmentTable engToNon = new MapAlignmentTable();
-        AlignmentTable nonToEng = new MapAlignmentTable();
+        final String nonEnglishLanguage = nonEnglishVersion.getLanguage();
+        final AlignmentTable engToNon = new MapAlignmentTable();
+        final AlignmentTable nonToEng = new MapAlignmentTable();
         engToNon.linkReverse(nonToEng);
 
-        String dataPath = constructDataPath("mcr30", nonEnglishLanguage);
-        String iliPath = String.format("%s/ili.csv", dataPath);
+        final String dataPath = constructDataPath("mcr30", nonEnglishLanguage);
+        final String iliPath = String.format("%s/ili.csv", dataPath);
 
-        InputStream stream = InterLingualIndex.class.
-            getClassLoader().getResourceAsStream(iliPath);
-        if (stream == null) {
-            // no translation table available for this language
-            return;
-        }
-        try {
-            Map<POS, List<Long>> index = new HashMap<>();
+        try(final InputStream stream = InterLingualIndex.class.
+            getClassLoader().getResourceAsStream(iliPath))
+        {
+            if (stream == null) {
+                // no translation table available for this language
+                return;
+            }
+            final Map<POS, List<Long>> index = new HashMap<>();
             index.put(POS.NOUN, loadPOS(dataPath, "data.noun"));
             index.put(POS.VERB, loadPOS(dataPath, "data.verb"));
             index.put(POS.ADJECTIVE, loadPOS(dataPath, "data.adj"));
             index.put(POS.ADVERB, loadPOS(dataPath, "data.adv"));
-            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-            for (;;) {
-                String line = reader.readLine();
-                if (line == null) {
-                    break;
-                }
-                String [] cols = line.split(",");
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            while (reader.ready()) {
+                final String line = reader.readLine();
+                final String [] cols = line.split(",");
                 assert(cols.length == 2);
-                String src = cols[0];
-                String target = cols[1];
-                char posChar = src.charAt(0);
+                final String src = cols[0];
+                final String target = cols[1];
+                final char posChar = src.charAt(0);
                 if (posChar == target.charAt(0)) {
                     assert(src.charAt(1) == '#');
-                    int srcIndex = Integer.parseInt(src.substring(2));
-                    long targetOffset = Long.parseLong(target.substring(1));
-                    POS pos = POS.getPOSForKey(posChar);
+                    final int srcIndex = Integer.parseInt(src.substring(2));
+                    final long targetOffset = Long.parseLong(target.substring(1));
+                    final POS pos = POS.getPOSForKey(posChar);
                     nonToEng.addMapping(pos, index.get(pos).get(srcIndex), targetOffset);
                 }
             }
-        } finally {
-            stream.close();
         }
         alignmentMap.put(
             constructAlignmentKey(englishVersion, nonEnglishVersion),
@@ -349,31 +341,27 @@ public class InterLingualIndex
     }
 
     private static List<Long> loadPOS(
-        String dataPath,
-        String resourceName) throws IOException
+        final String dataPath,
+        final String resourceName) throws IOException
     {
-        List<Long> list = new ArrayList<>();
-        String resourcePath = String.format("%s/%s", dataPath, resourceName);
-        InputStream stream = InterLingualIndex.class.
-            getClassLoader().getResourceAsStream(resourcePath);
+        final List<Long> list = new ArrayList<>();
+        final String resourcePath = String.format("%s/%s", dataPath, resourceName);
+
         long pos = 0;
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-            for (;;) {
-                String line = reader.readLine();
-                if (line == null) {
-                    break;
-                }
-                long linePos = pos;
+        try(final InputStream stream = InterLingualIndex.class.
+            getClassLoader().getResourceAsStream(resourcePath))
+        {
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            while (reader.ready()) {
+                final String line = reader.readLine();
+                final long linePos = pos;
                 pos += (line.getBytes("UTF-8").length + 1);
                 if (!line.startsWith("#")) {
-                    long offset = Long.valueOf(line.split(" ")[0]);
+                    final long offset = Long.valueOf(line.split(" ")[0]);
                     assert(offset == linePos);
                     list.add(offset);
                 }
             }
-        } finally {
-            stream.close();
         }
         return list;
     }

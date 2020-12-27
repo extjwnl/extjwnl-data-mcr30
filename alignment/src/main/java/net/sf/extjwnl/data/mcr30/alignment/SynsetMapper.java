@@ -19,33 +19,33 @@ public interface SynsetMapper
      *
      * @throws JWNLException if dictionary unknown or resource unavailable
      */
-    Synset mapSynset(Synset sourceSynset) throws JWNLException;
+    Synset mapSynset(final Synset sourceSynset) throws JWNLException;
 }
 
-class SynsetIdentityMapper implements SynsetMapper
+class IdentitySynsetMapper implements SynsetMapper
 {
-    @Override public Synset mapSynset(Synset sourceSynset)
+    @Override public Synset mapSynset(final Synset sourceSynset)
     {
         return sourceSynset;
     }
 }
 
-class SynsetAlignedMapper implements SynsetMapper
+class AlignedSynsetMapper implements SynsetMapper
 {
-    private AlignmentTable alignmentTable;
+    private final AlignmentTable alignmentTable;
 
-    private Dictionary targetDictionary;
+    private final Dictionary targetDictionary;
 
-    SynsetAlignedMapper(AlignmentTable alignmentTable, Dictionary targetDictionary)
+    AlignedSynsetMapper(final AlignmentTable alignmentTable, final Dictionary targetDictionary)
     {
         this.alignmentTable = alignmentTable;
         this.targetDictionary = targetDictionary;
     }
 
-    @Override public Synset mapSynset(Synset sourceSynset) throws JWNLException
+    @Override public Synset mapSynset(final Synset sourceSynset) throws JWNLException
     {
-        POS pos = sourceSynset.getPOS();
-        Long targetOffset = alignmentTable.lookup(pos, sourceSynset.getOffset());
+        final POS pos = sourceSynset.getPOS();
+        final Long targetOffset = alignmentTable.lookup(pos, sourceSynset.getOffset());
         if (targetOffset == null) {
             return null;
         } else {
