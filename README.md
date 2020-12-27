@@ -19,7 +19,7 @@ In your `pom.xml`:
 <dependency>
     <groupId>net.sf.extjwnl.mcr</groupId>
     <artifactId>extjwnl-data-spa-mcr30</artifactId>
-    <version>0.0.1</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -41,7 +41,7 @@ use it, you first need the following additional dependency in your `pom.xml`:
 <dependency>
     <groupId>net.sf.extjwnl.mcr</groupId>
     <artifactId>extjwnl-data-alignment-mcr30</artifactId>
-    <version>0.0.1</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
