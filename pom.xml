@@ -3,7 +3,7 @@
 
     <groupId>net.sf.extjwnl.mcr</groupId>
     <artifactId>extjwnl-data-mcr30</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>extJWNL MCR 3.0 2016 Wordnet Data</name>
     <description>Dictionary data from MCR 3.0 2016 Unix version</description>
@@ -34,7 +34,7 @@
         <url>https://github.com/extjwnl/extjwnl-data-mcr30.git</url>
         <connection>scm:git:git://github.com/extjwnl/extjwnl-data-mcr30.git</connection>
         <developerConnection>scm:git:git@github.com:extjwnl/extjwnl-data-mcr30.git</developerConnection>
-        <tag>extjwnl-data-mcr30-1.0.2</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <developers>
