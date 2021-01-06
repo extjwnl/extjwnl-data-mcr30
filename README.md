@@ -122,3 +122,7 @@ are the Spanish-specific stemming rules.
 
 For Spanish, exceptional forms (irregular verb conjugations, noun pluralizations, and adjective pluralizations) are enumerated using
 the [morphala](https://github.com/lingeringsocket/morphala) project.  All lemmas from the MCR dictionary are run through morphala's conjugation/pluralization routines.  From the resulting derived form, we attempt to reverse-derive the lemma as a base form via the standard `DetachSuffixesOperation`.  When this fails, we treat the derived form as an exception and add it to `supplemental_spa.txt`.
+
+# Future Work
+
+If you are interested in adding support for languages beyond Spanish (such as Portuguese), please open an issue on this project.  The bare minimum for a language would be to bring in the language-specific dataset from MCR and also add stemming rules for regular inflections; bonus would be to enhance morphala with the necessary support for generating exceptional forms for that language.
