@@ -14,7 +14,7 @@ In your `pom.xml`:
 <dependency>
     <groupId>net.sf.extjwnl</groupId>
     <artifactId>extjwnl</artifactId>
-    <version>1.8.0</version>
+    <version>2.0.3</version>
 </dependency>
 <dependency>
     <groupId>net.sf.extjwnl.mcr</groupId>
