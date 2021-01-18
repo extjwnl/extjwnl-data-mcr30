@@ -74,6 +74,8 @@ Synset englishSynset2 = mapper.mapSynset(spanishSynset2);
 ...
 ```
 
+For more information, see the [javadoc](http://extjwnl.sourceforge.net/javadocs/net/sf/extjwnl/data/mcr30/alignment/package-summary.html).
+
 # Acknowledgements
 
 The data for this package comes from the [Multilingual Central Repository (MCR)](https://adimen.si.ehu.es/web/MCR):
